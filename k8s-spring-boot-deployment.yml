@@ -1,34 +1,26 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: jhooq-springboot
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: jhooq-springboot
-  template:
-    metadata:
-      labels:
-        app: jhooq-springboot
-    spec:
-      containers:
-        - name: springboot
-          image: rahulwagh17/jhooq-docker-demo:jhooq-docker-demo
-          ports:
-            - containerPort: 8080
-          env:
-            - name: PORT
-              value: "8080"
----
 apiVersion: v1
 kind: Service
 metadata:
-  name: jhooq-springboot
+  name: ubuntu-pod
 spec:
-  type: LoadBalancer
-  ports:
-    - port: 80
-      targetPort: 8080
   selector:
-    app: jhooq-springboot
+    app: demoapp   
+  ports: 
+  - port: 8080
+    targetPort: 80
+  type: Loadbalancer
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-pod
+  labels:
+    app: demoapp
+spec:   
+  containers: 
+  - image: ramadevidyuthi2021/ubuntu4.0
+    name: ubuntu-pod
+    ports: 
+    - containerPort:80
